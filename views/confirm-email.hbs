@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
+
+        *{
+            font-family: 'Oswald', sans-serif;
+        }
+        input.number::-webkit-outer-spin-button, 
+        input.number::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        form{
+            max-width: 4300px;
+            margin: 0 auto;
+        }
+
+        input[type=number].number {
+            -moz-appearance: textfield;
+        }
+        label{
+            display: block;
+            text-align: center;
+        }
+        .number{
+            width: calc(25% - 2px);
+            font-size: 4em;
+            float: left;
+            text-align: center;
+            margin: 0;
+            box-sizing: border-box;
+            padding: 0;
+            border: 1px solid #333;
+        }
+        button{
+            color: #fff;
+            background-color: #333;
+            padding: 10px;
+            width: 100%;
+            margin-top: 2em;
+        }
+    </style>
+</head>
+<body>
+    <form action="" method="POST">
+        <div>
+            <label>PIN</label>
+            <input type="number" class="number" name="v1">
+            <input type="number" class="number" name="v2">
+            <input type="number" class="number" name="v3">
+            <input type="number" class="number" name="v4">
+            <input type="number" class="number" name="v5">
+            <input type="number" class="number" name="v6">
+        </div>
+        <button type="submit">VERIFICAR</button>
+    </form>
+</body>
+</html>
