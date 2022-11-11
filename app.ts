@@ -16,7 +16,7 @@ import hbs from 'hbs';
 require('dotenv').config()
 const bodyParser = require('body-parser');
 const path = require('node:path');
-const mysqlStore = require('express-mysql-session') (session);
+const mysqlStore = require('express-mysql-session')(session);
 const PORT = process.env.PORT_HOST;
 
 AdminJS.registerAdapter({
@@ -69,7 +69,10 @@ const start = async () => {
                 {
                     new: {
                         before: async function (request: any) {
-                            request.payload.password = await bcrypt.hash(request.payload.password, 10);
+                            if (request.payload.password) {
+                                request.payload.password = await bcrypt.hash(request.payload.password, 10);
+                            }
+                            //TODO: Fazer envio de e-mail ao criar usuário.
                             return request;
                         }
                     },
@@ -122,8 +125,8 @@ const start = async () => {
                 const user = await User.findOne({
                     where: {
                         email: email
-                    },
-                })
+                    }
+                });
                 if (user) {
                     const verifica = await bcrypt.compare(password, user.getDataValue('password'));
                     if (verifica) {
@@ -142,19 +145,20 @@ const start = async () => {
             saveUninitialized: true,
             secret: 'UBdI6gdXQOMybKEkZtSyXIuP0iJ2GTrl',
             cookie: {
-                httpOnly: process.env.NODE_ENV ==='production',
+                httpOnly: process.env.NODE_ENV === 'production',
                 secure: process.env.NODE_ENV === 'production'
             },
-            name:'Projeto3',
+            name: 'Projeto3',
         }
     );
-    app.use(bodyParser.urlencoded({ extended: true}));
     app.use(express.json())
     hbs.registerPartials(path.join(__dirname, 'views'))
     app.set('view engine', 'hbs');
     app.use(admin.options.rootPath, adminRouter)
+
+    app.use(bodyParser.urlencoded({ extended: true }));
     app.use("/auth", auth);
-    
+
     app.listen(PORT, () => {
         console.log("Projeto rodando");
     })
