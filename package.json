@@ -1,7 +1,4 @@
 {
-  "name": "projeto3-typescript-adminjs",
-  "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-dev": "ts-node-dev app.ts",
