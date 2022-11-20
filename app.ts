@@ -12,6 +12,7 @@ import bcrypt from "bcrypt";
 
 import { auth } from './routes/auth';
 import hbs from 'hbs';
+import UserController from './controllers/UserController';
 
 require('dotenv').config()
 const bodyParser = require('body-parser');
@@ -46,6 +47,8 @@ const generateResource = (model: object, hideElements: any = null, actions: any 
     }
 }
 
+const userCtrl = new UserController();
+
 const start = async () => {
     const adminOptions = {
         resources: [
@@ -70,9 +73,12 @@ const start = async () => {
                     new: {
                         before: async function (request: any) {
                             if (request.payload.password) {
-                                request.payload.password = await bcrypt.hash(request.payload.password, 10);
+                                request.payload.password = await bcrypt.hash(request.payload.password, 10)
                             }
-                            //TODO: Fazer envio de e-mail ao criar usuário.
+                            request.payload.pin = '789456'
+                           
+                            userCtrl.sendToken(request.payload.pin, request.payload.email)
+                           
                             return request;
                         }
                     },
@@ -130,7 +136,12 @@ const start = async () => {
                 if (user) {
                     const verifica = await bcrypt.compare(password, user.getDataValue('password'));
                     if (verifica) {
-                        return user;
+                            if(user.active){
+                            return user;
+                        }else{
+                            userCtrl.sendToken(user.pin, user.email)
+                            return false;
+                        }
                     }
                 }
                 return false;
