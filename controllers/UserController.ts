@@ -5,8 +5,8 @@ const hbs = require('nodemailer-express-handlebars');
 class UserController {
     mail: Mail;
 
-    constructor(){
-        this.mail = new Mail();
+    constructor(rootDir: string | null){
+        this.mail = new Mail(rootDir);
     }
     public async confirmEmail(pin: string): Promise<any>{
         let result = {
@@ -37,14 +37,16 @@ class UserController {
         }
         return result;
     }
-    public async sendToken(pin: string | null, email: string | null): Promise<any>{
-        this.mail.sendEmail(email, 'Confirmação de e-mail', `
-            <h1>Confirmação de e-mail</h1></br>
-            <p>Clique no link a seguir para poder confirmar seu e-mail com o pin abaixo. <a 
-            href="http://localhost:3000/auth/confirm-email">http://localhost:3000/auth/
-            confirm-email</a>.</p>
-            <p>PIN: ${pin}</p>
-        `)  
+    public async sendToken(pin: string | null, email: string | null, name: string | null): Promise<any>{
+        try{
+            this.mail.sendEmail(email, 'Confirmação de e-mail', 'token-email', {
+                pin,
+                name,
+                url: `http://localhost:3000/auth/confirm-email`
+            })  
+        }catch(err){
+            console.log(`Erro ao enviar e-mail ${err}`);
+        }
     }
 }
 

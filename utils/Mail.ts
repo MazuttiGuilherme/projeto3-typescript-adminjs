@@ -1,40 +1,58 @@
-require("dotenv").config()
-const nodemailer = require ('nodemailer');
-const hbs = require('nodemailer-express-handlebars');
+import { ExpressHandlebars } from "express-handlebars";
+import expressHandlebars from "express-handlebars/dist/express-handlebars";
 
-export default class Mail{
+require("dotenv").config()
+const nodemailer = require('nodemailer');
+const hbs = require('nodemailer-express-handlebars');
+const exphbs = require('exphbs');
+const { resolve } = require('path')
+
+export default class Mail {
     transporter: any;
 
-    constructor(){
+    constructor(rootDir: string | null) {
         this.transporter = nodemailer.createTransport({
             port: process.env.EMAIL_PORT,
-            host:process.env.EMAIL_SMTP,
+            host: process.env.EMAIL_SMTP,
             auth: {
                 user: process.env.EMAIL,
                 pass: process.env.EMAIL_PASSWORD,
             },
             secure: true
         });
-        const options = {
-            extName: '.hbs',
-            viewPath: `${__dirname}/views/email/`,
-            layoutsDir: `${__dirname}/views/email/`,
-            defaultLayout: 'template'
+        if (rootDir) {
+            const viewPath = resolve(rootDir, 'views', 'emails');
+
+            this.transporter.use('compile', hbs({
+                viewEngine: exphbs.create({
+                   // layoutDir: resolve(viewPath, 'layouts'),
+                   // partialsDir: resolve(viewPath, 'partials'),
+                    defaultLayout: 'default',
+                    extname: '.hbs',
+                }),
+                viewPath,
+                extName: '.hbs',
+            }));
         }
-        this.transporter.use('compile', hbs(options))
     }
-    async sendEmail(to: string | null, subject: string, html: string): Promise<any>{
+
+    public async sendEmail(to: string | null, subject: string | null, template: string | null, context: any): Promise<any> {
         const data = {
             from: process.env.EMAIL,
             to,
             subject,
-            template: 'token-email'
+            template,
+            context
         }
 
-        try{
+        try {
             return await this.transporter.sendMail(data);
-        }catch(err){
+        } catch (err) {
             throw err;
         }
     }
+}
+
+function sendEmail(to: any, arg1: number, subject: any, string: any, html: any, string1: any) {
+    throw new Error("Function not implemented.");
 }

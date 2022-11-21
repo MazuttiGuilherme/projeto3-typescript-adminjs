@@ -2,6 +2,7 @@ import AdminJS from 'adminjs';
 import AdminJSExpress from "@adminjs/express";
 import session from 'express-session';
 import express from 'express';
+import exphbs from 'express-handlebars';
 import sequelize from './db';
 import * as AdminJSSequelize from '@adminjs/sequelize';
 
@@ -25,6 +26,7 @@ AdminJS.registerAdapter({
     Database: AdminJSSequelize.Database
 })
 
+const ROOT_DIR  = __dirname;
 const generateResource = (model: object, hideElements: any = null, actions: any = null) => {
     return {
         resource: model,
@@ -47,7 +49,7 @@ const generateResource = (model: object, hideElements: any = null, actions: any 
     }
 }
 
-const userCtrl = new UserController();
+const userCtrl = new UserController(ROOT_DIR);
 
 const start = async () => {
     const adminOptions = {
@@ -75,9 +77,9 @@ const start = async () => {
                             if (request.payload.password) {
                                 request.payload.password = await bcrypt.hash(request.payload.password, 10)
                             }
-                            request.payload.pin = '789456'
+                            request.payload.pin = (Math.floor(100000 + Math.random() * 900000)).toString();
                            
-                            userCtrl.sendToken(request.payload.pin, request.payload.email)
+                            userCtrl.sendToken(request.payload.pin, request.payload.email, request.payload.name)
                            
                             return request;
                         }
@@ -139,7 +141,7 @@ const start = async () => {
                             if(user.active){
                             return user;
                         }else{
-                            userCtrl.sendToken(user.pin, user.email)
+                            userCtrl.sendToken(user.pin, user.email, user.name)
                             return false;
                         }
                     }
@@ -164,7 +166,10 @@ const start = async () => {
     );
     app.use(express.json())
     hbs.registerPartials(path.join(__dirname, 'views'))
-    app.set('view engine', 'hbs');
+    
+    
+    app.set('view engine', '.hbs');
+
     app.use(admin.options.rootPath, adminRouter)
 
     app.use(bodyParser.urlencoded({ extended: true }));
