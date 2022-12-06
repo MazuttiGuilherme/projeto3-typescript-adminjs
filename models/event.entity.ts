@@ -1,27 +1,29 @@
 import { Optional, Model, DataTypes } from 'sequelize';
 import sequelize from '../db';
 
-interface IProduct {
-    id: number,
+interface IEvent {
+    event_id: number,
     name: string,
-    category: number,
+    local: string,
+    event_date: Date,
     createdAt: Date,
     updatedAt: Date
 }
 
-export type ProductCreationAttributes = Optional<IProduct, 'id'>;
+export type EventCreationAttributes = Optional<IEvent, 'event_id'>;
 
-export class Product extends Model<IProduct, ProductCreationAttributes>{
-    declare id: number;
+export class Event extends Model<IEvent, EventCreationAttributes>{
+    declare event_id: number;
     declare name: string;
-    declare category: number;
+    declare local: string;
+    declare event_date: Date;
     declare createdAt: Date;
     declare updatedAt: Date;
 } 
 
-Product.init(
+Event.init(
     {
-        id: {
+        event_id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
@@ -30,13 +32,18 @@ Product.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        category: {
+        local: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'categorias',
+                model: 'local',
                 key: 'id'
             }
+        },
+        event_date: {
+            type: DataTypes.STRING,
+            allowNull: false,
+           
         },
         createdAt: {
             type: DataTypes.DATE
@@ -47,6 +54,6 @@ Product.init(
     },
     {
         sequelize,
-        tableName: 'produtos',
-        modelName: 'product'
+        tableName: 'eventos',
+        modelName: 'Event'
     });

@@ -1,8 +1,8 @@
-import { User } from '../models/user.entity';
+import { Client } from '../models/client.entity';
 import Mail from '../utils/Mail';
 const hbs = require('nodemailer-express-handlebars');
 
-class UserController {
+class ClientController {
     mail: Mail;
 
     constructor(rootDir: string | null){
@@ -14,13 +14,13 @@ class UserController {
             msg: ''
         };
         try{
-            const user = await User.findOne({
+            const client = await Client.findOne({
                 where: {
                     pin
                 }
             });
-            if(user){
-                await User.update({ active: 1, pin: ""}, {
+            if(client){
+                await Client.update({ active: 1, pin: ""}, {
                     where: {
                         pin
                     }
@@ -50,4 +50,4 @@ class UserController {
     }
 }
 
-export default UserController;
+export default ClientController;

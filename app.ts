@@ -6,14 +6,14 @@ import exphbs from 'express-handlebars';
 import sequelize from './db';
 import * as AdminJSSequelize from '@adminjs/sequelize';
 
-import { Category } from './models/category.entity';
-import { Product } from './models/product.entity';
-import { User } from './models/user.entity';
+import { Local } from './models/local.entity';
+import { Event } from './models/event.entity';
+import { Client } from './models/client.entity';
 import bcrypt from "bcrypt";
 
 import { auth } from './routes/auth';
 import hbs from 'hbs';
-import UserController from './controllers/UserController';
+import ClientController from './controllers/ClientController';
 
 require('dotenv').config()
 const bodyParser = require('body-parser');
@@ -49,15 +49,15 @@ const generateResource = (model: object, hideElements: any = null, actions: any 
     }
 }
 
-const userCtrl = new UserController(ROOT_DIR);
+const clientCtrl = new ClientController(ROOT_DIR);
 
 const start = async () => {
     const adminOptions = {
         resources: [
-            generateResource(Product),
-            generateResource(Category),
+            generateResource(Event),
+            generateResource(Local),
             generateResource(
-                User,
+                Client,
                 {
                     password: {
                         type: 'password',
@@ -79,7 +79,7 @@ const start = async () => {
                             }
                             request.payload.pin = (Math.floor(100000 + Math.random() * 900000)).toString();
                            
-                            userCtrl.sendToken(request.payload.pin, request.payload.email, request.payload.name)
+                            clientCtrl.sendToken(request.payload.pin, request.payload.email, request.payload.name)
                            
                             return request;
                         }
@@ -119,51 +119,52 @@ const start = async () => {
     const sessionStore = new mysqlStore({
         connectionLimit: 10,
         password: process.env.DB_PASS,
-        user: process.env.DB_USER,
+        client: process.env.DB_CLIENT,
         database: process.env.MYSQL_DB,
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         createDatabaseTable: true
     });
+    const adminRouter = AdminJSExpress.buildRouter(admin);
 
-    const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
-        admin,
-        {
-            authenticate: async function (email, password) {
-                const user = await User.findOne({
-                    where: {
-                        email: email
-                    }
-                });
-                if (user) {
-                    const verifica = await bcrypt.compare(password, user.getDataValue('password'));
-                    if (verifica) {
-                            if(user.active){
-                            return user;
-                        }else{
-                            userCtrl.sendToken(user.pin, user.email, user.name)
-                            return false;
-                        }
-                    }
-                }
-                return false;
-            },
-            cookieName: 'Projeto3',
-            cookiePassword: 'UBdI6gdXQOMybKEkZtSyXIuP0iJ2GTrl'
-        },
-        null,
-        {
-            store: sessionStore,
-            resave: true,
-            saveUninitialized: true,
-            secret: 'UBdI6gdXQOMybKEkZtSyXIuP0iJ2GTrl',
-            cookie: {
-                httpOnly: process.env.NODE_ENV === 'production',
-                secure: process.env.NODE_ENV === 'production'
-            },
-            name: 'Projeto3',
-        }
-    );
+    // const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+    //     admin,
+    //     {
+    //        authenticate: async function (email, password) {
+    //             const client = await Client.findOne({
+    //                where: {
+    //                     email: email
+    //                 }
+    //             });
+    //             if (client) {
+    //                 const verifica = await bcrypt.compare(password, client.getDataValue('password'));
+    //                 if (verifica) {
+    //                        if(client.active){
+    //                         return client;
+    //                     }else{
+    //                         clientCtrl.sendToken(client.pin, client.email, client.name)
+    //                         return false;
+    //                     }
+    //                 }
+    //             }
+    //       return false;
+    //         },
+    //         cookieName: 'Projeto3',
+    //         cookiePassword: 'UBdI6gdXQOMybKEkZtSyXIuP0iJ2GTrl'
+    //     },
+    //     null,
+    //     {
+    //         store: sessionStore,
+    //         resave: true,
+    //         saveUninitialized: true,
+    //         secret: 'UBdI6gdXQOMybKEkZtSyXIuP0iJ2GTrl',
+    //         cookie: {
+    //             httpOnly: process.env.NODE_ENV === 'production',
+    //             secure: process.env.NODE_ENV === 'production'
+    //         },
+    //         name: 'Projeto3',
+    //     }
+    // );
     app.use(express.json())
     hbs.registerPartials(path.join(__dirname, 'views'))
     

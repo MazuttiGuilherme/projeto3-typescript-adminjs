@@ -1,8 +1,8 @@
 import * as express from "express";
 const auth = express.Router();
-import UserController from '../controllers/UserController';
+import ClientController from '../controllers/ClientController';
 
-const userCtrl = new UserController(null);
+const clientCtrl = new ClientController(null);
 
 
 auth.get('/confirm-email', (req, res) => {
@@ -11,7 +11,7 @@ auth.get('/confirm-email', (req, res) => {
 
 auth.post('/confirm-email', async (req, res) => {
     //TODO: Adicionar confirmação de e-mail
-    const result: any = await userCtrl.confirmEmail(req.body.pin)
+    const result: any = await clientCtrl.confirmEmail(req.body.pin)
     res.statusCode  = result.statusCode
     res.send({msg: result.msg})
 });

@@ -15,7 +15,7 @@ export default class Mail {
             port: process.env.EMAIL_PORT,
             host: process.env.EMAIL_SMTP,
             auth: {
-                user: process.env.EMAIL,
+                client: process.env.EMAIL,
                 pass: process.env.EMAIL_PASSWORD,
             },
             secure: true
