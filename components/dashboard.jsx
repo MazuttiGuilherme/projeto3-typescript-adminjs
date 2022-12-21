@@ -30,7 +30,7 @@ import React from 'react';
 import './bootstrap.css';
 
 const col = {
-    width: '25%',
+    width: '50%',
     float: 'left',
     boxSizing: 'border-box',
     padding: '5px',
@@ -43,6 +43,11 @@ const item = {
     color: '#fff'
 }
 
+const input = {
+    padding: '5px',
+    fontSize: '1.2em'
+}
+
 const Dashboard = () => {
     return
     <div className={'container-fluid'}>
@@ -50,15 +55,16 @@ const Dashboard = () => {
             display: 'block',
             textAlign: 'right'
         }}>
-            <input type={"date"} />
-            <input type={"date"} />
-            <select name="" id="">
+            <input type={"date"} style={input} />
+            <input type={"date"} style={input}/>
+            <select name="" id="" style={input}>
                 <option value="0" selected>Todos os Eventos</option>
                 <option value="0" selected>7 dias</option>
                 <option value="0" selected>15 dias</option>
                 <option value="0" selected>1 mês</option>
                 <option value="0" selected>Mês anterior</option>
                 <option value="0" selected>1 ano</option>
+                <option value="">Custom</option>
             </select>
         </div>
         <div>
