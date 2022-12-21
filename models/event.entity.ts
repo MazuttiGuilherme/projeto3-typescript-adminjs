@@ -33,7 +33,7 @@ Event.init(
             allowNull: false
         },
         local: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
             references: {
                 model: 'local',
@@ -41,7 +41,7 @@ Event.init(
             }
         },
         event_date: {
-            type: DataTypes.STRING,
+            type: DataTypes.DATE,
             allowNull: false,
            
         },

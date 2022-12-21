@@ -19,6 +19,7 @@ require('dotenv').config()
 const bodyParser = require('body-parser');
 const path = require('node:path');
 const mysqlStore = require('express-mysql-session')(session);
+
 const PORT = process.env.PORT_HOST;
 
 AdminJS.registerAdapter({
