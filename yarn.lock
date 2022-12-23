@@ -58,7 +58,7 @@
 
 "@adminjs/mongoose@^3.0.1":
   version "3.0.1"
-  resolved "https://registry.npmjs.org/@adminjs/mongoose/-/mongoose-3.0.1.tgz"
+  resolved "https://registry.yarnpkg.com/@adminjs/mongoose/-/mongoose-3.0.1.tgz#50a68cd430e6322cd28a6ed2b8719a453bbb69ec"
   integrity sha512-HX30VuHhE3KH2xL/E9XPe6ohExjfy9GecIMmP7OygUt1dRBJY2u/hRzZ09bf8HsOCRrR5yA8AbuxPBi1hGiQ1A==
   dependencies:
     escape-regexp "0.0.1"

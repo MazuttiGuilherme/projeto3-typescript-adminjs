@@ -1,5 +1,6 @@
 import * as express from "express";
 import moment from 'moment';
+import faker from "faker";
 
 import ReportLocalController from '../controllers/ReportLocalController';
 import ReportEventController from '../controllers/ReportEventController';
@@ -22,7 +23,7 @@ dashboard.get('/client/quantity', async (req, res) => {
       datasets: [
         {
           label: 'Clientes ',
-          data,
+          data: labels.map(()=> faker.datatype.number({min:0, max:1000})),
           backgroundColor: 'rgba(255, 99, 132, 0.5)',
         }
       ]
@@ -122,8 +123,8 @@ dashboard.get('/local/best-sellers', async (req: any, res) => {
         labels,
         datasets: [
           {
-            label: 'Salões mais vendidas',
-            data,
+            label: 'Salões mais vendidos',
+            data: ['Rio de Janeiro I', 'Rio de Janeiro II', 'Rio de Janeiro III', 'Arpoador', 'Botafogo', 'Flamengo' ],
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
             borderColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 1,

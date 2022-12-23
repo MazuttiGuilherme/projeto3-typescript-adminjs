@@ -4,7 +4,7 @@ import session from 'express-session';
 import express from 'express';
 import { sequelize, mongooseDb } from './db';
 import * as AdminJSSequelize from '@adminjs/sequelize';
-import * as AdminJSMongoose from '@adminjs/mongoose'
+import * as AdminJSMongoose from '@adminjs/mongoose';
 
 import { Local } from './models/local.entity';
 import { Event } from './models/event.entity';
@@ -30,6 +30,11 @@ const PORT = process.env.PORT_HOST;
 AdminJS.registerAdapter({
     Resource: AdminJSSequelize.Resource,
     Database: AdminJSSequelize.Database
+})
+
+AdminJS.registerAdapter({
+    Resource: AdminJSMongoose.Resource,
+    Database: AdminJSMongoose.Database
 })
 
 const ROOT_DIR  = __dirname;
@@ -62,6 +67,9 @@ const start = async () => {
         resources: [
             generateResource(Event),
             generateResource(Local),
+            generateResource(ReportLocal),
+            generateResource(ReportEvent),
+            generateResource(ReportClient),
             generateResource(
                 Client,
                 {
