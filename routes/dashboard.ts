@@ -1,6 +1,5 @@
 import * as express from "express";
 import moment from 'moment';
-import faker from "faker";
 
 import ReportLocalController from '../controllers/ReportLocalController';
 import ReportEventController from '../controllers/ReportEventController';
@@ -23,7 +22,7 @@ dashboard.get('/client/quantity', async (req, res) => {
       datasets: [
         {
           label: 'Clientes ',
-          data: labels.map(()=> faker.datatype.number({min:0, max:1000})),
+          data,
           backgroundColor: 'rgba(255, 99, 132, 0.5)',
         }
       ]
@@ -51,9 +50,9 @@ dashboard.get('/event/quantity', async (req, res) => {
     });
 });
 
-dashboard.get('/event/by-client', async (req: any, res) => {
-  const reportClientCtrl = new ReportClientController();
-  const result = await reportClientCtrl.get(req.query);
+dashboard.get('/orders/by-event', async (req: any, res) => {
+  const reportEventCtrl = new ReportEventController();
+  const result = await reportEventCtrl.get(req.query);
 
   const data = result.map((r: any) => r.sum);
   const labels = result.map((r: any) => r._id);
