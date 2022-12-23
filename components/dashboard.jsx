@@ -63,12 +63,17 @@ export const optionsClientQuantity = {
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 const Dashboard = () => {
+    const [stateFilter, setStateFilter] = useState({
+        period: 7,
+        date_start: null,
+        date_end: null
+    });
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const [selectDate, setSelectDate] = useState("7");
-    const { data: dataEventQuantity } = useSWR(`http://localhost:3000/dashboard/event/quantity?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher)
-    const { data: ordersByClient } = useSWR(`http://localhost:3000/dashboard/client/by-client?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher)
-    const { data: dataLocal } = useSWR(`http://localhost:3000/dashboard/local/best-?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher)
+    const [selectDate, setSelectDate] = useState("all");
+    const { data: dataClientQuantity } = useSWR('http://localhost:3000/dashboard/client/quantity', fetcher)
+    const { data: ordersByEvent } = useSWR('http://localhost:3000/dashboard/orders/by-event', fetcher)
+    const { data: dataLocal } = useSWR('http://localhost:3000/dashboard/local/best-sellers', fetcher)
 
     useEffect(() => {
         if(selectDate !== 'custom'){
@@ -128,11 +133,11 @@ const Dashboard = () => {
                     </div>
                     <div style={col}>
                         <div style={item}>
-                        { dataCategories ?
+                        { dataLocal ?
                              <Radar 
                                 width={400}
                                 height={400}
-                                data={dataCategories}
+                                data={dataLocal}
                                 options={{
                                     maintainAspectRatio: false
                                 }}
