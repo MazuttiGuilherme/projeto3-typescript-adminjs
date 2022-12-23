@@ -1,5 +1,5 @@
 import { DataTypes, Model, Optional, STRING } from "sequelize";
-import sequelize from '../db';
+import {sequelize} from '../db';
 
 interface IClient {
     id: number;

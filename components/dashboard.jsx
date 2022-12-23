@@ -14,10 +14,10 @@ import {
     ArcElement,
     PointElement,
     Filler,
-  } from 'chart.js';
-  import { Bar, Pie, Radar } from 'react-chartjs-2';
+} from 'chart.js';
+import { Bar, Pie, Radar } from 'react-chartjs-2';
 
-  ChartJS.register(
+ChartJS.register(
     RadialLinearScale,
     PointElement,
     Filler,
@@ -29,7 +29,7 @@ import {
     Tooltip,
     Legend,
     ArcElement
-  );
+);
 
 const col = {
     width: '50%',
@@ -49,13 +49,13 @@ const input = {
 export const optionsClientQuantity = {
     responsive: true,
     plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Clientes por dia',
-      },
+        legend: {
+            position: 'top',
+        },
+        title: {
+            display: true,
+            text: 'Clientes por dia',
+        },
     },
 };
 
@@ -70,94 +70,94 @@ const Dashboard = () => {
     });
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const [selectDate, setSelectDate] = useState("all");
-    const { data: dataClientQuantity } = useSWR('http://localhost:3000/dashboard/client/quantity', fetcher)
-    const { data: ordersByEvent } = useSWR('http://localhost:3000/dashboard/orders/by-event', fetcher)
-    const { data: dataLocal } = useSWR('http://localhost:3000/dashboard/local/best-sellers', fetcher)
+    const [selectDate, setSelectDate] = useState("7");
+    const { data: dataClientQuantity } = useSWR(`http://localhost:3000/dashboard/client/quantity?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher)
+    const { data: ordersByEvent } = useSWR(`http://localhost:3000/dashboard/orders/by-event?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher)
+    const { data: dataLocal } = useSWR(`http://localhost:3000/dashboard/local/best-sellers?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher)
 
     useEffect(() => {
-        if(selectDate !== 'custom'){
+        if (selectDate !== 'custom') {
             setStartDate("");
             setEndDate("");
         }
     }, [selectDate])
 
     return <div className={'container-fluid'}>
-                <div style={{
-                    display: 'block',
-                    textAlign: 'right',
-                    padding: '15px',
-                    boxSizing: 'border-box'
-                }}>
-                    <input
-                        disabled={selectDate!=="custom"}
-                        value={startDate}
-                        type="date" 
-                        style={input}
-                        max={endDate !== "" ? endDate : moment().format('YYYY-MM-DD')}
-                        onChange={(event) => setStartDate(event.target.value)}/>
-                    <input
-                        disabled={selectDate!=="custom"}
-                        value={endDate}
-                        type="date" 
-                        style={input}
-                        min={startDate !== "" ? startDate : null}
-                        max={moment().format('YYYY-MM-DD')}
-                        onChange={(event) => setEndDate(event.target.value)}/>
-                    <select
-                        style={input}
-                        onChange={(event) => setSelectDate(event.target.value)}
-                        >
-                        <option value="all">Todos os Eventos</option>
-                        <option value="7" selected>7 dias</option>
-                        <option value="15">15 dias</option>
-                        <option value="30">1 mês</option>
-                        <option value="180">6 meses</option>
-                        <option value="365">1 ano</option>
-                        <option value="custom">Custom</option>
-                    </select>
-                </div>
-                <div>
-                    <div style={col}>
-                        <div style={item}>
-                        { ordersByEvent ?
-                             <Pie 
-                                width={300}
-                                height={300}
-                                data={ordersByEvent}
-                                options={{
-                                    maintainAspectRatio: false
-                                }} />
-                            : "Não há dados para esse dashboard." }
-                        </div>
-                    </div>
-                    <div style={col}>
-                        <div style={item}>
-                        { dataLocal ?
-                             <Radar 
-                                width={400}
-                                height={400}
-                                data={dataLocal}
-                                options={{
-                                    maintainAspectRatio: false
-                                }}
-                            />
-                            : "Não há dados para esse dashboard." }
-                        </div>
-                    </div>
-                    <div style={{
-                        ...col,
-                        width: '100%'
-                    }}>
-                        <div style={item}>
-                            { dataClientQuantity ?
-                            <Bar 
-                                options={optionsClientQuantity} data={dataUsersQuantity} /> 
-                            : "Não há dados para esse dashboard." }
-                        </div>
-                    </div>
+        <div style={{
+            display: 'block',
+            textAlign: 'right',
+            padding: '15px',
+            boxSizing: 'border-box'
+        }}>
+            <input
+                disabled={selectDate !== "custom"}
+                value={startDate}
+                type="date"
+                style={input}
+                max={endDate !== "" ? endDate : moment().format('YYYY-MM-DD')}
+                onChange={(event) => setStartDate(event.target.value)} />
+            <input
+                disabled={selectDate !== "custom"}
+                value={endDate}
+                type="date"
+                style={input}
+                min={startDate !== "" ? startDate : null}
+                max={moment().format('YYYY-MM-DD')}
+                onChange={(event) => setEndDate(event.target.value)} />
+            <select
+                style={input}
+                onChange={(event) => setSelectDate(event.target.value)}
+            >
+                <option value="all">Todos os Eventos</option>
+                <option value="7" selected>7 dias</option>
+                <option value="15">15 dias</option>
+                <option value="30">1 mês</option>
+                <option value="180">6 meses</option>
+                <option value="365">1 ano</option>
+                <option value="custom">Custom</option>
+            </select>
+        </div>
+        <div>
+            <div style={col}>
+                <div style={item}>
+                    {ordersByEvent ?
+                        <Pie
+                            width={300}
+                            height={300}
+                            data={ordersByEvent}
+                            options={{
+                                maintainAspectRatio: false
+                            }} />
+                        : "Não há dados para esse dashboard."}
                 </div>
             </div>
+            <div style={col}>
+                <div style={item}>
+                    {dataLocal ?
+                        <Radar
+                            width={400}
+                            height={400}
+                            data={dataLocal}
+                            options={{
+                                maintainAspectRatio: false
+                            }}
+                        />
+                        : "Não há dados para esse dashboard."}
+                </div>
+            </div>
+            <div style={{
+                ...col,
+                width: '100%'
+            }}>
+                <div style={item}>
+                    {dataClientQuantity ?
+                        <Bar
+                            options={optionsClientQuantity} data={dataUsersQuantity} />
+                        : "Não há dados para esse dashboard."}
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 export default Dashboard;

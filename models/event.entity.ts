@@ -1,5 +1,5 @@
 import { Optional, Model, DataTypes } from 'sequelize';
-import sequelize from '../db';
+import {sequelize} from '../db';
 
 interface IEvent {
     event_id: number,

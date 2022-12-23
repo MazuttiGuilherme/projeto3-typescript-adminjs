@@ -1,9 +1,11 @@
 import { Optional, Model, DataTypes } from 'sequelize';
-import sequelize from '../db';
+import { sequelize } from '../db';
 
 interface ILocal {
     id: number,
     name: string,
+    createdAt: Date,
+    updatedAt: Date
 }
 
 export type LocalCreationAttributes = Optional<ILocal, 'id'>;
@@ -23,6 +25,12 @@ Local.init(
         name: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        createdAt: {
+            type: DataTypes.DATE
+        },
+        updatedAt: {
+            type: DataTypes.DATE
         },
     },
     {

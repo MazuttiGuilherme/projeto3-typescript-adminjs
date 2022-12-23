@@ -1,10 +1,10 @@
 import AdminJS from 'adminjs';
-import AdminJSExpress from "@adminjs/express";
+import AdminJSExpress from '@adminjs/express';
 import session from 'express-session';
 import express from 'express';
-import exphbs from 'express-handlebars';
-import sequelize from './db';
+import { sequelize, mongooseDb } from './db';
 import * as AdminJSSequelize from '@adminjs/sequelize';
+import * as AdminJSMongoose from '@adminjs/mongoose'
 
 import { Local } from './models/local.entity';
 import { Event } from './models/event.entity';
@@ -12,14 +12,19 @@ import { Client } from './models/client.entity';
 import bcrypt from "bcrypt";
 
 import { auth } from './routes/auth';
+import { dashboard } from './routes/dashboard';
+
 import hbs from 'hbs';
 import ClientController from './controllers/ClientController';
+import { ReportEvent } from './models/report_event.entity';
+import { ReportClient } from './models/report_client.entity';
+import { ReportLocal } from './models/report_local.entity';
 
-require('dotenv').config()
-const bodyParser = require('body-parser');
 const path = require('node:path');
 const mysqlStore = require('express-mysql-session')(session);
 
+require('dotenv').config()
+const bodyParser = require('body-parser');
 const PORT = process.env.PORT_HOST;
 
 AdminJS.registerAdapter({
@@ -114,6 +119,10 @@ const start = async () => {
     sequelize.sync()
         .then((result) => console.log(''))
         .catch((err) => console.log(err))
+
+        mongooseDb.once("open", () => {
+            console.log("Conexão ao aberta com sucesso");
+          })
 
     const admin = new AdminJS(adminOptions);
 
