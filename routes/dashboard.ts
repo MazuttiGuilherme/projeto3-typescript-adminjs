@@ -109,7 +109,7 @@ dashboard.get('/client/event', async (req: any, res) => {
       })
 });
 
-dashboard.get('/clocal/best-sellers', async (req: any, res) => {
+dashboard.get('/local/best-sellers', async (req: any, res) => {
   const reportLocalCtrl = new ReportLocalController();
   const result = await reportLocalCtrl.get(req.query);
 
