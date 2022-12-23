@@ -122,7 +122,7 @@ dashboard.get('/local/best-sellers', async (req: any, res) => {
         labels,
         datasets: [
           {
-            label: 'Salões mais vendidos',
+            label: 'Salões mais Vendidos',
             data: ['Rio de Janeiro I', 'Rio de Janeiro II', 'Rio de Janeiro III', 'Arpoador', 'Botafogo', 'Flamengo' ],
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
             borderColor: 'rgba(255, 99, 132, 1)',
