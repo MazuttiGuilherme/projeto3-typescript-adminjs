@@ -107,6 +107,29 @@ dashboard.get('/client/event', async (req: any, res) => {
           },
         ],
       })
+});
+
+dashboard.get('/clocal/best-sellers', async (req: any, res) => {
+  const reportLocalCtrl = new ReportLocalController();
+  const result = await reportLocalCtrl.get(req.query);
+
+  const data = result.map((r: any) => r.sum);
+  const labels = result.map((r: any) => r._id);
+
+  
+    res.statusCode = 200;
+    res.json({
+        labels,
+        datasets: [
+          {
+            label: 'Salões mais vendidas',
+            data,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+          },
+        ],
+      })
 })
 
 export { dashboard };

@@ -46,7 +46,7 @@ const input = {
 }
 
 
-export const optionsUsersQuantity = {
+export const optionsClientQuantity = {
     responsive: true,
     plugins: {
       legend: {
@@ -54,7 +54,7 @@ export const optionsUsersQuantity = {
       },
       title: {
         display: true,
-        text: 'Usuários por dia',
+        text: 'Clientes por dia',
       },
     },
 };
@@ -68,7 +68,7 @@ const Dashboard = () => {
     const [selectDate, setSelectDate] = useState("7");
     const { data: dataEventQuantity } = useSWR(`http://localhost:3000/dashboard/event/quantity?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher)
     const { data: ordersByClient } = useSWR(`http://localhost:3000/dashboard/client/by-client?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher)
-    const { data: dataLocal } = useSWR(`http://localhost:3000/dashboard/categories/best-?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher)
+    const { data: dataLocal } = useSWR(`http://localhost:3000/dashboard/local/best-?start_date=${startDate}&end_date=${endDate}&select_date=${selectDate}`, fetcher)
 
     useEffect(() => {
         if(selectDate !== 'custom'){
@@ -115,11 +115,11 @@ const Dashboard = () => {
                 <div>
                     <div style={col}>
                         <div style={item}>
-                        { ordersByProduct ?
+                        { ordersByEvent ?
                              <Pie 
                                 width={300}
                                 height={300}
-                                data={ordersByProduct}
+                                data={ordersByEvent}
                                 options={{
                                     maintainAspectRatio: false
                                 }} />
@@ -145,9 +145,9 @@ const Dashboard = () => {
                         width: '100%'
                     }}>
                         <div style={item}>
-                            { dataUsersQuantity ?
+                            { dataClientQuantity ?
                             <Bar 
-                                options={optionsUsersQuantity} data={dataUsersQuantity} /> 
+                                options={optionsClientQuantity} data={dataUsersQuantity} /> 
                             : "Não há dados para esse dashboard." }
                         </div>
                     </div>
