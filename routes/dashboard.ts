@@ -119,11 +119,11 @@ dashboard.get('/local/best-sellers', async (req: any, res) => {
   
     res.statusCode = 200;
     res.json({
-        labels,
+        labels: ['Rio de Janeiro I', 'Rio de Janeiro II', 'Rio de Janeiro III', 'Arpoador', 'Botafogo', 'Flamengo' ],
         datasets: [
           {
             label: 'Salões mais Vendidos',
-            data: ['Rio de Janeiro I', 'Rio de Janeiro II', 'Rio de Janeiro III', 'Arpoador', 'Botafogo', 'Flamengo' ],
+            data: [1, 2, 3, 4, 5, 6],
             backgroundColor: 'rgba(255, 99, 132, 0.2)',
             borderColor: 'rgba(255, 99, 132, 1)',
             borderWidth: 1,
