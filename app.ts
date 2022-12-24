@@ -129,7 +129,7 @@ const start = async () => {
         .catch((err) => console.log(err))
 
         mongooseDb.once("open", () => {
-            console.log("Conexão ao aberta com sucesso");
+            console.log("Conexão aberta com sucesso");
           })
 
     const admin = new AdminJS(adminOptions);
