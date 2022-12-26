@@ -5,7 +5,7 @@ interface IClient {
     id: number;
     name: string;
     email: string;
-    Clientname: string;
+    company: string;
     password: string;
     role: string;
     active: number;
@@ -20,7 +20,7 @@ export class Client extends Model<IClient, ClientCreationAttributes> {
     declare id: number | null;
     declare name: string | null;
     declare email: string | null;
-    declare clientname: string | null;
+    declare company: string | null;
     declare password: string | null;
     declare role: string | null;
     declare active: number | null;
@@ -45,7 +45,7 @@ Client.init(
             type: DataTypes.STRING(70),
             allowNull: false
         },
-        Clientname: {
+        company: {
             type: DataTypes.STRING(30),
             allowNull: false
         },
