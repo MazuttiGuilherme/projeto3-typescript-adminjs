@@ -143,46 +143,47 @@ const start = async () => {
         port: process.env.DB_PORT,
         createDatabaseTable: true
     });
-    //const adminRouter = AdminJSExpress.buildRouter(admin);
+    const adminRouter = AdminJSExpress.buildRouter(admin);
 
-    const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
-        admin,
-        {
-           authenticate: async function (email, password) {
-                const client = await Client.findOne({
-                   where: {
-                        email: email
-                    }
-                });
-                if (client) {
-                    const verifica = await bcrypt.compare(password, client.getDataValue('password'));
-                    if (verifica) {
-                           if(client.active){
-                            return client;
-                        }else{
-                            clientCtrl.sendToken(client.pin, client.email, client.name)
-                            return false;
-                        }
-                    }
-                }
-          return false;
-            },
-            cookieName: 'Projeto3',
-            cookiePassword: 'UBdI6gdXQOMybKEkZtSyXIuP0iJ2GTrl'
-        },
-        null,
-        {
-            store: sessionStore,
-            resave: true,
-            saveUninitialized: true,
-            secret: 'UBdI6gdXQOMybKEkZtSyXIuP0iJ2GTrl',
-            cookie: {
-                httpOnly: process.env.NODE_ENV === 'production',
-                secure: process.env.NODE_ENV === 'production'
-            },
-            name: 'Projeto3',
-        }
-    );
+    // const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+    //     admin,
+    //     {
+    //        authenticate: async function (email, password) {
+    //             const client = await Client.findOne({
+    //                where: {
+    //                     email: email
+    //                 }
+    //             });
+    //             if (client) {
+    //                 const verifica = await bcrypt.compare(password, client.getDataValue('password'));
+    //                 if (verifica) {
+    //                        if(client.active){
+    //                         return client;
+    //                     }else{
+    //                         clientCtrl.sendToken(client.pin, client.email, client.name)
+    //                         return false;
+    //                     }
+    //                 }
+    //             }
+    //       return false;
+    //         },
+    //         cookieName: 'Projeto3',
+    //         cookiePassword: 'UBdI6gdXQOMybKEkZtSyXIuP0iJ2GTrl'
+    //     },
+    //     null,
+    //     {
+    //         store: sessionStore,
+    //         resave: true,
+    //         saveUninitialized: true,
+    //         secret: 'UBdI6gdXQOMybKEkZtSyXIuP0iJ2GTrl',
+    //         cookie: {
+    //             httpOnly: process.env.NODE_ENV === 'production',
+    //             secure: process.env.NODE_ENV === 'production'
+    //         },
+    //         name: 'Projeto3',
+    //     }
+    // );
+    
     app.use(express.json())
     hbs.registerPartials(path.join(__dirname, 'views'))
     
