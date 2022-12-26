@@ -8,6 +8,7 @@ interface IEvent {
     event_date: Date,
     format: string,
     pax: number,
+    value: number,
     createdAt: Date,
     updatedAt: Date
 }
@@ -21,6 +22,7 @@ export class Event extends Model<IEvent, EventCreationAttributes>{
     declare event_date: Date;
     declare format: string;
     declare pax: number;
+    declare value: number;
     declare createdAt: Date;
     declare updatedAt: Date;
 } 
@@ -53,6 +55,10 @@ Event.init(
             allowNull: false,
         },
         pax: {
+            type: DataTypes.NUMBER,
+            allowNull: false,
+        },
+        value: {
             type: DataTypes.NUMBER,
             allowNull: false,
         },

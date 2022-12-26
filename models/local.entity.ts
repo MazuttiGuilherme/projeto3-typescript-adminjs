@@ -6,6 +6,7 @@ interface ILocal {
     name: string,
     format: string,
     pax: number,
+    value: number,
     createdAt: Date,
     updatedAt: Date
 }
@@ -17,6 +18,7 @@ export class Local extends Model<ILocal, LocalCreationAttributes>{
     declare name: string;
     declare format: string;
     declare pax: number;
+    declare value: number;
 }
 
 Local.init(
@@ -30,9 +32,6 @@ Local.init(
             type: DataTypes.STRING,
             allowNull: false
         },
-        createdAt: {
-            type: DataTypes.DATE
-        },
         format: {
             type: DataTypes.STRING,
             allowNull: false
@@ -40,6 +39,13 @@ Local.init(
         pax: {
             type: DataTypes.NUMBER,
             allowNull: false
+        },
+        value: {
+            type: DataTypes.NUMBER,
+            allowNull: false
+        },
+        createdAt: {
+            type: DataTypes.DATE
         },
         updatedAt: {
             type: DataTypes.DATE
